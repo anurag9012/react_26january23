@@ -1,24 +1,42 @@
+import { useState } from "react";
 import "./styles.css";
-//import useState from "react";
-import React, { useState } from "react";
-
-//var username = prompt("enter your name");
-var username = "anurag";
 
 export default function App() {
-  let [likecounts, setlikecounts] = useState(0);
-  function clickhandler() {
-    likecounts = likecounts + 1;
-    setlikecounts(likecounts++);
+  var [emojiclicked, setemjiclicked] = useState("");
+  var [emoji, setemojimeaning] = useState("");
+  var emojiDictionary = {
+    "😊": "smiling",
+    "😳": "disbelief",
+    "😔": "sad",
+    "🥡": "takeout box",
+    "❤️": "love",
+    "😑": "annoyance"
+  };
+  function clickhandler(i) {
+    console.log("emoji clicked is .. ", i);
+    setemjiclicked(emojiDictionary[i]);
   }
-  // var style = { color: "blue", backgroundColor: "yellow" };
+  function onchangehandler(e) {
+    console.log(e.target.value);
+    let emoji = e.target.value;
+    if (emojiDictionary[emoji]) {
+      setemojimeaning(emojiDictionary[emoji]);
+    } else {
+      setemojimeaning("this emoji is not in our data base");
+    }
+  }
+  var emojiarray = Object.keys(emojiDictionary);
   return (
     <div className="App">
-      <h1 style={{ color: "blue", backgroundColor: "yellow" }}>
-        welcome {username}
-      </h1>
-      <button onClick={clickhandler}>clickme</button>
-      {likecounts}
+      <h1>emoji meaning</h1>
+      <input placeholder="enter " onChange={onchangehandler}></input>
+      <h3>{emoji}</h3>
+      <h2>{emojiclicked}</h2>
+      {emojiarray.map((item, index) => (
+        <li key={index} onClick={() => clickhandler(item)}>
+          {item}
+        </li>
+      ))}
     </div>
   );
 }
